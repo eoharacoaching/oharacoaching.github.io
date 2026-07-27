@@ -1,0 +1,119 @@
+/* ==========================================================================
+   MOBILE FIXES — Eoin O'Hara Coaching site
+   --------------------------------------------------------------------------
+   Where to put this:
+   Framer → Site Settings → General → Custom Code → "End of <head> tag"
+   Wrap it in <style>...</style> when you paste it there.
+
+   Why a separate file instead of editing the exported HTML:
+   The exported HTML's CSS classes (framer-xxxxx) are auto-generated and are
+   wired up to Framer's animation JavaScript by exact name. Renaming/rewriting
+   that code would break the animations, and Framer overwrites the exported
+   file every time you republish anyway. This file only ADDS narrow,
+   mobile-only overrides on top of it, so it survives republishing and is
+   easy to read/maintain.
+
+   Everything below is scoped to max-width: 809.98px (Framer's own "Phone"
+   breakpoint), so nothing here touches desktop or tablet layouts.
+   ========================================================================== */
+
+@media (max-width: 809.98px) {
+
+  /* --------------------------------------------------------------------
+     FIX 1 — "Dublin" services card: text overflowed the bottom of the card
+     --------------------------------------------------------------------
+     Cause: the Services grid forces every card into a fixed 200px row
+     height on mobile, but the "Dublin" card's paragraph is longer than
+     that, so the text spills out past the rounded corners.
+     Fix: let the grid rows size themselves to their content instead of
+     being locked to 200px, and let each card grow to fit its own text.
+     -------------------------------------------------------------------- */
+  .framer-1tdn29w,
+  .framer-3ttudc,
+  .framer-mmm4ot {
+    height: auto !important;
+    grid-auto-rows: auto !important;
+    grid-template-rows: none !important;
+  }
+
+  .framer-1qgpq17,
+  .framer-ci7zq0,
+  .framer-10txwor,
+  .framer-14pt7uh,
+  .framer-1ifs1lq,
+  .framer-1jsm4lh,
+  .framer-1uf98d9,
+  .framer-10zkoku {
+    height: auto !important;
+    min-height: 200px !important;
+  }
+
+  /* --------------------------------------------------------------------
+     FIX 2 — "My Philosophy" quote card: huge gap above the quote
+     --------------------------------------------------------------------
+     Cause: the card's flex parents are set up to stretch it to fill a
+     tall column on mobile, pushing the icon and quote text apart.
+     Fix: stop the card (and its wrapper) from stretching — let it size
+     to its own content, then centre it in the section.
+     -------------------------------------------------------------------- */
+  .framer-1yry3xg {
+    height: auto !important;
+  }
+
+  .framer-1nfceph-container {
+    flex: none !important;
+    width: 100% !important;
+    height: auto !important;
+    display: flex !important;
+    justify-content: center !important;
+  }
+
+  .framer-F9b34.framer-1r11atk {
+    height: auto !important;
+    min-height: 152px !important;
+  }
+
+  /* --------------------------------------------------------------------
+     FIX 3 — Charity section photos overlapping/cluttered
+     --------------------------------------------------------------------
+     Cause: the two photos are placed with CSS Grid using fixed pixel
+     widths and grid alignment ("place-self: start" / "start end") meant
+     for a two-column desktop layout. On the single-column mobile grid
+     they land on top of one another.
+     Fix: switch this pair of images to a simple, stacked flex column so
+     they sit cleanly one above the other.
+     -------------------------------------------------------------------- */
+  .framer-651o01 {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    aspect-ratio: unset !important;
+    gap: 16px !important;
+  }
+
+  .framer-euedo3,
+  .framer-fj7hxx {
+    position: relative !important;
+    place-self: unset !important;
+    width: 100% !important;
+    max-width: 320px !important;
+    height: 300px !important;
+  }
+
+  /* --------------------------------------------------------------------
+     FIX 4 — Donation card overflowing the right edge of the screen
+     --------------------------------------------------------------------
+     Cause: the card keeps a fixed aspect-ratio (width : height) while its
+     height is set to 100% of a very tall parent, so its calculated width
+     ends up wider than the phone screen.
+     Fix: drop the aspect-ratio on mobile and let the card simply fill the
+     available width.
+     -------------------------------------------------------------------- */
+  .framer-1d1zpmk {
+    aspect-ratio: unset !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    height: auto !important;
+  }
+
+}
