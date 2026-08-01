@@ -13,9 +13,34 @@
    mobile-only overrides on top of it, so it survives republishing and is
    easy to read/maintain.
 
-   Everything below is scoped to max-width: 809.98px (Framer's own "Phone"
-   breakpoint), so nothing here touches desktop or tablet layouts.
+   Most of this is scoped to max-width: 809.98px (Framer's own "Phone"
+   breakpoint) and only touches mobile layouts. The donation-card fix
+   near the bottom is the one exception — it applies at every width,
+   see its own comment for why.
    ========================================================================== */
+
+/* --------------------------------------------------------------------
+   FIX 4 (all widths) — donation card clipping its own content
+   --------------------------------------------------------------------
+   Cause: the card (and the "Acquired Brain Injury Ireland" sub-card
+   inside it) size themselves from a fixed aspect-ratio instead of their
+   actual content, with overflow hidden. That was fine while the content
+   was short enough to fit, but the charity logo added to the sub-card
+   made it taller than the aspect-ratio allows, so the description text
+   and donate button get clipped off — at every screen width, not just
+   mobile.
+   Fix: let both cards size themselves to their content instead.
+   -------------------------------------------------------------------- */
+.framer-1d1zpmk {
+  aspect-ratio: unset !important;
+  height: auto !important;
+  align-self: auto !important;
+}
+
+.framer-1slnn1t {
+  aspect-ratio: unset !important;
+  height: auto !important;
+}
 
 @media (max-width: 809.98px) {
 
@@ -101,19 +126,53 @@
   }
 
   /* --------------------------------------------------------------------
-     FIX 4 — Donation card overflowing the right edge of the screen
+     FIX 4b — donation card, mobile-only follow-up
      --------------------------------------------------------------------
-     Cause: the card keeps a fixed aspect-ratio (width : height) while its
-     height is set to 100% of a very tall parent, so its calculated width
-     ends up wider than the phone screen.
-     Fix: drop the aspect-ratio on mobile and let the card simply fill the
-     available width.
+     The width/height fix above (FIX 4, applies at all widths) handles
+     the aspect-ratio clipping everywhere. On top of that, mobile has two
+     extra problems: the card's grid parent still keeps a fixed 2-row
+     track height on this narrow layout, and the card itself is pinned to
+     the far right of a 2-column grid area it no longer needs — take the
+     parent out of grid layout altogether and let the card size to 100%
+     of the mobile column instead.
      -------------------------------------------------------------------- */
+  .framer-3ttudc {
+    display: block !important;
+    height: auto !important;
+  }
+
   .framer-1d1zpmk {
-    aspect-ratio: unset !important;
     width: 100% !important;
     max-width: 100% !important;
+    grid-row: auto !important;
+    grid-column: auto !important;
+    justify-self: auto !important;
+  }
+
+  /* Its inner card also relies on "flex: 1 0 0" to fill a definite parent
+     height (set by the desktop aspect-ratio). Now that the parent is
+     auto-height, that flex-grow child has nothing to grow into and
+     collapses to 0px, taking all of its own content with it. Let it size
+     to its content instead. */
+  .framer-vt1u0r {
+    flex: none !important;
+    width: 100% !important;
     height: auto !important;
+  }
+
+  /* --------------------------------------------------------------------
+     FIX 5 — "Certified. Experienced. Committed." step list overflowing
+     --------------------------------------------------------------------
+     Cause: this reusable "Step" component's heading and paragraph are
+     hardcoded to a 544px desktop width with no responsive override, so on
+     phones they run far past the right edge of the screen.
+     Fix: let the text size to its (now full-width) column instead.
+     -------------------------------------------------------------------- */
+  .framer-k0Ws2.framer-1cdle72,
+  .framer-k0Ws2 .framer-gh8zhv,
+  .framer-k0Ws2 .framer-x3x45w,
+  .framer-k0Ws2 .framer-1m157jt {
+    width: 100% !important;
   }
 
 }
