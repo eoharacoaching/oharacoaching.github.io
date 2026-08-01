@@ -42,6 +42,31 @@
   height: auto !important;
 }
 
+/* --------------------------------------------------------------------
+   FIX 4c (all widths) — donation sub-card content left-aligned instead
+   of centred under the logo
+   --------------------------------------------------------------------
+   Cause: the logo badge is centred by its container, but the heading/
+   description below it stretch to the full card width with left-aligned
+   text, and the donate button (a sibling, not part of that centred
+   column) is left-aligned by default too - so everything below the logo
+   ends up flush left instead of matching it.
+   -------------------------------------------------------------------- */
+.framer-1slnn1t {
+  align-items: center !important;
+}
+
+.framer-d2fal3 h4,
+.framer-1oohqg7 p {
+  text-align: center !important;
+}
+
+/* A little breathing room around the "Supporting survivors..." line - the
+   parent's 4px gap left it crammed between the heading and the button. */
+.framer-1oohqg7 {
+  margin: 10px 0 !important;
+}
+
 @media (max-width: 809.98px) {
 
   /* --------------------------------------------------------------------
